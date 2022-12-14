@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,7 +18,6 @@ public class DomainUserDetailsService implements UserDetailsService {
 
     private final Logger log = LoggerFactory.getLogger(DomainUserDetailsService.class);
 
-
     @Override
     public UserDetails loadUserByUsername(final String login) {
         List<GrantedAuthority> grantedAuthorities =  new ArrayList<>();
@@ -27,12 +27,9 @@ public class DomainUserDetailsService implements UserDetailsService {
         }
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
         String encodedPassword = passwordEncoder.encode("");
 
-        return new org.springframework.security.core.userdetails.User(login.toUpperCase(),
-                encodedPassword,grantedAuthorities
-        );
+        return new User(login.toUpperCase(), encodedPassword, grantedAuthorities);
 
     }
 
